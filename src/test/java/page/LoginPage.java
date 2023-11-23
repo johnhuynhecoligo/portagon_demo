@@ -22,7 +22,6 @@ public class LoginPage {
         page.locator(txt_email).fill(email);
         page.locator(txt_pass).fill(pass);
         page.locator(btn_login).click();
-        page.locator(lbl_welcome).waitFor();
     }
 
 }

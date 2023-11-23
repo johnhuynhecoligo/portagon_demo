@@ -20,7 +20,6 @@ import java.nio.file.Paths;
 @Execution(ExecutionMode.CONCURRENT) //Enable parallel execution. Config in the playwright.config file
  @TestMethodOrder(MethodOrderer.DisplayName.class) //Order test execution by Display name
 public class testBase {
-    private static String url = "";
     private static Properties properties;
     private static FileInputStream fileIn;
     static NameFile nameFile = new NameFile();
@@ -33,7 +32,6 @@ public class testBase {
     static String projectPath = System.getProperty("user.dir") + "/";
     //Get the path of the configs.properties
     static String propertiesFilePathRoot = "src/test/java/resources/configs.properties";
-    public static APIRequestContext apiRequestContext;
 
     @BeforeAll
     public static void beforeAll(){
@@ -42,7 +40,7 @@ public class testBase {
             setPropertiesFile(projectPath, propertiesFilePathRoot);
 
             //Change setHeadless to True for headless running
-            BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(50);
+            BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(50);
             browser = playwright.chromium().launch(options);
             context = browser.newContext();
 //            context.tracing().start(new Tracing.StartOptions()
@@ -76,8 +74,8 @@ public class testBase {
             //Load properties file
             properties.load(fileIn);
         } catch (Exception exp) {
-            System.out.println(exp.getMessage());
-            System.out.println(exp.getCause());
+//            System.out.println(exp.getMessage());
+//            System.out.println(exp.getCause());
             exp.printStackTrace();
         }
     }
@@ -87,11 +85,11 @@ public class testBase {
         try {
             //get values from properties file
             value = properties.getProperty(KeyProp);
-            System.out.println(value);
+//            System.out.println(value);
             return value;
         } catch (Exception exp) {
-            System.out.println(exp.getMessage());
-            System.out.println(exp.getCause());
+//            System.out.println(exp.getMessage());
+//            System.out.println(exp.getCause());
             exp.printStackTrace();
         }
         return value;
