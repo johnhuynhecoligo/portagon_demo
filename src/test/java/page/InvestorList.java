@@ -15,8 +15,6 @@ public class InvestorList {
     //locators
     private String btn = "//form/div[2]/div[2]/nav/span[9]/a";
 
-
-
     public int getTotalPage() throws InterruptedException {
         String url_last_button = page.getAttribute(btn, "href");
         String[] arrayString = url_last_button.split("=");
@@ -39,6 +37,14 @@ public class InvestorList {
             cel_locator = "//form/div/table/tbody/tr["+row+"]/td["+i+"]";
             cel_data[i-1] = page.locator(cel_locator).textContent();
         }
+        return cel_data;
+    }
+
+    public String getInvestorID(int row){
+        String cel_data ="";
+        String cel_locator = "//form/div/table/tbody/tr["+row+"]/td[1]/a";
+
+        cel_data = page.locator(cel_locator).getAttribute("href");
         return cel_data;
     }
 

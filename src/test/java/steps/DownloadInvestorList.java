@@ -28,16 +28,36 @@ public class DownloadInvestorList extends testBase{
         }
     }
 
+    public void writeCSV(String[][] courseArray) throws Exception {
+
+        //create a File class object and give the file the name employees.csv
+        java.io.File courseCSV = new java.io.File("investor_list.csv");
+
+        //Create a Printwriter text output stream and link it to the CSV File
+        java.io.PrintWriter outfile = new java.io.PrintWriter(courseCSV);
+
+
+        for (int i = 0; i<courseArray.length; i++){
+            for (int j=0; j<6; j++){
+                outfile.write(courseArray[i][j] + ",");
+            }
+            outfile.write("\n");
+
+        }
+
+        outfile.close();
+    } //end writeCSV()
+
     @Test
     @DisplayName("002. Count investors")
-    void countInvestors() throws  InterruptedException {
+    void countInvestors() throws Exception {
 
         String[] cell_data;
         Thread.sleep(3000);
         page.navigate(testBase.getPropValue("url_investor_list"));
         Thread.sleep(2000);
 //        int total_page = investorList.getTotalPage();
-        int total_page = 3;
+        int total_page = 2;
         int row_total = 0;
 
         if (total_page>1){
@@ -47,21 +67,37 @@ public class DownloadInvestorList extends testBase{
             row_total = row_total + count_row_lastpage;
         }
 
-        System.out.print("Total: " + row_total + " rows");
+        System.out.println("Total: " + row_total + " rows");
 
-        String[][] investors_list = new String[row_total][6];
+        String[][] investors_list = new String[row_total][7];
 
         //Go to one page
         for (int pageCount = 1; pageCount<=total_page; pageCount++){
+            int new_arr_row = 0;
             //Get row per page
             page.navigate("https://admin.portagon.io/platforms/9/investors?page="+pageCount);
             int count_row_per_page = 0;
             count_row_per_page = investorList.getRowsPerPage();
-            for (int rowCount = 1; rowCount<count_row_per_page; rowCount++){
+            for (int rowCount = 1; rowCount<=count_row_per_page; rowCount++){
                 cell_data = investorList.getCelData(rowCount);
                 //Get columns per row
-                for(int columnCount=0; columnCount<=cell_data.length-1; columnCount++){
-                    investors_list[rowCount-1][columnCount] = cell_data[columnCount].trim();
+                for(int columnCount=1; columnCount<=cell_data.length-1; columnCount++){
+                    int count_first_row = 0;
+                    if (pageCount>1){
+                        count_first_row = count_first_row + ((pageCount-1)*25);
+                    }
+
+                    //Get InvestorID
+                    String arr_id = investorList.getInvestorID(rowCount);
+
+
+                    //Data
+                    investors_list[rowCount-1 + count_first_row][0] = arr_id.trim();
+                    investors_list[rowCount-1 + count_first_row][1] = cell_data[0].trim();
+                    investors_list[rowCount-1 + count_first_row][2] = cell_data[2].trim();
+                    investors_list[rowCount-1 + count_first_row][3] = cell_data[3].trim();
+                    investors_list[rowCount-1 + count_first_row][4] = cell_data[4].trim();
+                    investors_list[rowCount-1 + count_first_row][5] = cell_data[5].trim();
                 }
             }
         }
@@ -74,6 +110,7 @@ public class DownloadInvestorList extends testBase{
             System.out.println("\n");
         }
 
+        writeCSV(investors_list);
     }
 
 }
