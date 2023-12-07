@@ -10,6 +10,9 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import utils.NameFile;
 
 import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -42,7 +45,7 @@ public class testBase {
             //Change setHeadless to True for headless running
             BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(50);
             browser = playwright.chromium().launch(options);
-            context = browser.newContext();
+            context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1800,950));
 //            context.tracing().start(new Tracing.StartOptions()
 //                    .setScreenshots(true)
 //                    .setSnapshots(true)
@@ -93,6 +96,60 @@ public class testBase {
             exp.printStackTrace();
         }
         return value;
+    }
+
+    public void writeCSV(String[][] courseArray, String investorID, String folderName, String fileName) throws Exception {
+
+        try{
+            Path path = Paths.get("Downloads/"+investorID);
+            Files.createDirectories(path);
+            path = Paths.get("Downloads/"+investorID+"/"+folderName);
+            Files.createDirectories(path);
+        }catch (Exception ie){
+            System.err.println(ie);
+        }
+
+        fileName = setNameFile(fileName);
+
+        //create a File class object and give the file the name employees.csv
+        java.io.File courseCSV = new java.io.File("Downloads/"+investorID+"/"+folderName+"/"+fileName+".csv");
+
+        //Create a Printwriter text output stream and link it to the CSV File
+        java.io.PrintWriter outfile = new java.io.PrintWriter(courseCSV);
+
+
+        for (int row = 0; row<courseArray.length; row++){
+            for (int col=0; col<courseArray[row].length; col++){
+                outfile.write(courseArray[row][col] + ",");
+            }
+            outfile.write("\n");
+
+        }
+
+        outfile.close();
+    } //end writeCSV()
+
+    public void navigateToUrl (String url) throws InterruptedException{
+        page.navigate(url);
+        Thread.sleep(3000);
+//        page.locator(locatorToVerify).wait(3000);
+    }
+
+    public String setNameFile (String fileName) {
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
+        String filename = "";
+        filename = fileName + "_" + timeStamp;
+        return filename;
+    }
+
+    public String splitString(String data, String unexpectedString){
+        String[] splits = data.split(unexpectedString);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String item: splits){
+            stringBuilder.append(item);
+        }
+        String split_data = stringBuilder.toString().trim();
+        return split_data;
     }
 
 }

@@ -28,26 +28,6 @@ public class DownloadInvestorList extends testBase{
         }
     }
 
-    public void writeCSV(String[][] courseArray) throws Exception {
-
-        //create a File class object and give the file the name employees.csv
-        java.io.File courseCSV = new java.io.File("investor_list.csv");
-
-        //Create a Printwriter text output stream and link it to the CSV File
-        java.io.PrintWriter outfile = new java.io.PrintWriter(courseCSV);
-
-
-        for (int i = 0; i<courseArray.length; i++){
-            for (int j=0; j<6; j++){
-                outfile.write(courseArray[i][j] + ",");
-            }
-            outfile.write("\n");
-
-        }
-
-        outfile.close();
-    } //end writeCSV()
-
     @Test
     @DisplayName("002. Count investors")
     void countInvestors() throws Exception {
@@ -102,15 +82,17 @@ public class DownloadInvestorList extends testBase{
             }
         }
 
-        for (int i = 0; i<row_total; i++){
-            for (int j=0; j<6; j++){
-                System.out.print(investors_list[i][j] + "\t");
-            }
-
-            System.out.println("\n");
+//        for (int i = 0; i<row_total; i++){
+//            for (int j=0; j<6; j++){
+//                System.out.print(investors_list[i][j] + "\t");
+//            }
+//
+//            System.out.println("\n");
+//        }
+        String folder_name = "id3";
+        if (investors_list.length>0){
+            writeCSV(investors_list, folder_name, "Investors" ,"investor");
         }
-
-        writeCSV(investors_list);
     }
 
 }

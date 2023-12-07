@@ -43,10 +43,16 @@ public class InvestorList {
     public String getInvestorID(int row){
         String cel_data ="";
         String cel_locator = "//form/div/table/tbody/tr["+row+"]/td[1]/a";
-
-        cel_data = page.locator(cel_locator).getAttribute("href");
+        cel_data = page.locator(cel_locator).getAttribute("href").trim();
+        String[] splits = cel_data.split("/platforms/9/investors/");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String item: splits){
+            stringBuilder.append(item);
+        }
+        cel_data = stringBuilder.toString();
         return cel_data;
     }
+
 
     public String getCelPerRow(int row){
         String value = "";
