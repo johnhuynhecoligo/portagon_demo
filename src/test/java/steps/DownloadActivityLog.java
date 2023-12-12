@@ -136,11 +136,17 @@ public class DownloadActivityLog extends testBase{
 
                             activityLog_array[rowCount + count_first_row][6]=cell_data[5].trim();
                         }
+                        //Open activity log details
                         //Open email popup
                         if (cell_data[3].trim().equals("E-mail address")){
                             downloadEmailContent(rowCount, investorId, arr_id);
                         }else{
-
+                            //Get the html table
+                            Locator listElement = activityLog.getNoOfColLogDetailTable(rowCount, arr_id);
+                            System.out.println("There are detail col: "+listElement.count());
+                            activityLogDetailArray = new String[listElement.count()];
+                            activityLogDetailArray = activityLog.getContentLogDetailTable(rowCount, arr_id, listElement.count());
+                            downloadDetailOfActivity(investorId, arr_id, activityLogDetailArray, rowCount);
                         }
                     }
                 }
