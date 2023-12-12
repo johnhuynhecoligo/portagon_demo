@@ -58,6 +58,31 @@ public class ActivityLog {
         return cel_data;
     }
 
+    public Locator getNoOfColLogDetailTable(int row, String activityID) throws  InterruptedException{
+        String cel_locator = "";
+        cel_locator = "//section/div[2]/section/div[2]/div[2]/table/tbody/tr["+row+"]/td[5]/a";
+        page.locator(cel_locator).click();
+        Thread.sleep(1500);
+        Locator listEle = page.locator("//*[@id=\"audited_audit_"+activityID+"\"]/div/div/div[2]/table/tbody/tr/td");
+        String btnClose = "//*[@id=\"audited_audit_"+activityID+"\"]/div/div/div[1]/button/span";
+        page.locator(btnClose).click();
+        return listEle;
+    }
+
+    public String[] getContentLogDetailTable(int row, String activityID, int noCol) throws  InterruptedException{
+        String cel_locator = "";
+        cel_locator = "//section/div[2]/section/div[2]/div[2]/table/tbody/tr["+row+"]/td[5]/a";
+        page.locator(cel_locator).click();
+        Thread.sleep(1500);
+        String[] arr = new String[noCol];
+        for(int i =1; i<=noCol; i++){
+            arr[i-1] = page.locator("//*[@id=\"audited_audit_"+activityID+"\"]/div/div/div[2]/table/tbody/tr/td["+i+"]").textContent().trim();
+        }
+        String btnClose = "//*[@id=\"audited_audit_"+activityID+"\"]/div/div/div[1]/button/span";
+        page.locator(btnClose).click();
+        return arr;
+    }
+
     public String[] getAtributeSpecification(int row){
         String [] attr = new String[2];
         String cel_locator = "";
@@ -66,6 +91,18 @@ public class ActivityLog {
         attr[0] = page.locator(cel_locator).textContent().trim();
         attr[1] = page.locator(cel_locator).getAttribute("href").trim();
         return attr;
+    }
+
+    public void clickToOpenActivityDetails (int row){
+        String cel_locator = "";
+        cel_locator = "//section/div[2]/section/div[2]/div[2]/table/tbody/tr["+row+"]/td[5]/a";
+        page.locator(cel_locator).click();
+    }
+
+    public void clickSpecification(int row){
+        String cel_locator = "";
+        cel_locator = "//section/div[2]/section/div[2]/div[2]/table/tbody/tr["+row+"]/td[5]/a";
+        page.locator(cel_locator).click();
     }
 
     public String getActivityID (int row){

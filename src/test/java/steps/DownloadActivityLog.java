@@ -1,5 +1,8 @@
 package steps;
 
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
 import page.ActivityLog;
 
 public class DownloadActivityLog extends testBase{
@@ -14,16 +17,18 @@ public class DownloadActivityLog extends testBase{
         try {
             String url = activityLog.url_activityLog+investorId;
             String[] cell_data;
+            String[] activityLogDetailArray;
             int row_total = 0;
             int total_page = 1;
+            int count_row_per_page = 0;
             String temp = "";
-
+            String arr_id = "";
             navigateToUrl(url);
 
             if(page.isHidden(activityLog.pagination)){
                 System.out.println("There is 1 page");
                 total_page = 1;
-                int count_row_per_page = 0;
+                count_row_per_page = 0;
                 count_row_per_page = activityLog.getRowsPerPage();
                 System.out.println("There are: "+ count_row_per_page + " rows");
                 //Create new array
@@ -41,7 +46,7 @@ public class DownloadActivityLog extends testBase{
                     cell_data = activityLog.getCelData(rowCount);
                     //Get columns per row
                     for(int columnCount=1; columnCount<=cell_data.length; columnCount++){
-                        String arr_id = activityLog.getActivityID(rowCount);
+                        arr_id = activityLog.getActivityID(rowCount);
 
                         //Content
                         activityLog_array[rowCount][0]=arr_id;
@@ -56,8 +61,19 @@ public class DownloadActivityLog extends testBase{
                         temp = splitString(temp, " ");
                         activityLog_array[rowCount][4]= temp;
                         activityLog_array[rowCount][5]=attr[1];
-
                         activityLog_array[rowCount][6]=cell_data[5].trim();
+                    }
+                    //Open activity log details
+                    //Open email popup
+                    if (cell_data[3].trim().equals("E-mail address")){
+                        downloadEmailContent(rowCount, investorId, arr_id);
+                    }else{
+                        //Get the html table
+                        Locator listElement = activityLog.getNoOfColLogDetailTable(rowCount, arr_id);
+                        System.out.println("There are detail col: "+listElement.count());
+                        activityLogDetailArray = new String[listElement.count()];
+                        activityLogDetailArray = activityLog.getContentLogDetailTable(rowCount, arr_id, listElement.count());
+                        downloadDetailOfActivity(investorId, arr_id, activityLogDetailArray, rowCount);
                     }
                 }
 
@@ -89,7 +105,7 @@ public class DownloadActivityLog extends testBase{
                     //Count no. of rows at each page
                     String url2=url+"?page="+pageCount;
                     navigateToUrl(url2);
-                    int count_row_per_page = 0;
+                    count_row_per_page = 0;
                     count_row_per_page = activityLog.getRowsPerPage();
                     //Get row per page
                     for (int rowCount = 1; rowCount<=count_row_per_page; rowCount++){
@@ -102,7 +118,7 @@ public class DownloadActivityLog extends testBase{
                             }
 
                             //Get InvestorID
-                            String arr_id = activityLog.getActivityID(rowCount);
+                            arr_id = activityLog.getActivityID(rowCount);
 
                             //Content
                             activityLog_array[rowCount + count_first_row][0]=arr_id;
@@ -119,6 +135,12 @@ public class DownloadActivityLog extends testBase{
                             activityLog_array[rowCount + count_first_row][5]=attr[1];
 
                             activityLog_array[rowCount + count_first_row][6]=cell_data[5].trim();
+                        }
+                        //Open email popup
+                        if (cell_data[3].trim().equals("E-mail address")){
+                            downloadEmailContent(rowCount, investorId, arr_id);
+                        }else{
+
                         }
                     }
                 }
@@ -142,6 +164,55 @@ public class DownloadActivityLog extends testBase{
         }catch (Exception e){
             System.out.println(e);
         }
+    }
+
+    public void downloadEmailContent(int rowCount, String investorId, String logID) throws InterruptedException{
+        int temp_row = rowCount;
+        Page popup = page.waitForPopup(() ->{
+            activityLog.clickToOpenActivityDetails(temp_row);
+        });
+        String fileName = logID + "_" + popup.title().trim();
+        System.out.println(fileName);
+        popup.waitForLoadState();
+        String content = popup.content();
+        String folderName = "HTML Email";
+        writeHTML(content, investorId, folderName, fileName);
+        System.out.println("HTML Downloaded !");
+        popup.close();
+    }
+
+    public void downloadDetailOfActivity( String investorID, String logID, String[] content, int countRow) throws Exception {
+        String[][] logDetailArray = new String[2][5];
+        String[] logArray = content;
+        logDetailArray[0][0] = "activity_id";
+        logDetailArray[0][1] = "field";
+        logDetailArray[0][2] = "from";
+        logDetailArray[0][3] = "to";
+        logDetailArray[0][4] = "content";
+
+        String description = "";
+        for (int i = 3; i<logArray.length; i++){
+            description = description + " | " + logArray[i];
+        }
+        System.out.println(description);
+
+        //Find the available point in array
+//        int positionArr = 0;
+//        for(int row=0; row<logArray.length;row++){
+//            if (logDetailArray[row][0] == null){
+//                positionArr = row;
+//            }
+//        }
+
+        logDetailArray[1][0] = investorID;
+        logDetailArray[1][1] = logArray[0];
+        logDetailArray[1][2] = logArray[1];
+        logDetailArray[1][3] = logArray[2];
+        logDetailArray[1][4] = description;
+
+        String folderName = "LogDetail";
+        String fileName = logID+"_logDetail";
+        writeCSV(logDetailArray, investorID, folderName, fileName);
     }
 
 }

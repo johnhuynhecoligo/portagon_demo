@@ -11,7 +11,7 @@ public class DownloadMainScenario extends testBase{
 
     DownloadActivityLog downloadActivityLog = new DownloadActivityLog();
 
-    public String investorId = "112382";
+    public String investorId = "112522";
 
     @Test
     @DisplayName("001. Login")
