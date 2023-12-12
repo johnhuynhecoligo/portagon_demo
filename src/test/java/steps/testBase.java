@@ -129,6 +129,26 @@ public class testBase {
         outfile.close();
     } //end writeCSV()
 
+    public void writeHTML(String htmlContent, String investorID, String folderName, String fileName){
+        try{
+            Path path = Paths.get("Downloads/"+investorID);
+            Files.createDirectories(path);
+            path = Paths.get("Downloads/"+investorID+"/"+folderName);
+            Files.createDirectories(path);
+            fileName = setNameFile(fileName);
+
+            //create a File class object and give the file the name employees.csv
+            java.io.File courseCSV = new java.io.File("Downloads/"+investorID+"/"+folderName+"/"+fileName+".html");
+
+            //Create a Printwriter text output stream and link it to the CSV File
+            java.io.PrintWriter outfile = new java.io.PrintWriter(courseCSV);
+            outfile.write(htmlContent);
+
+        }catch (Exception ie){
+            System.err.println(ie);
+        }
+    }
+
     public void navigateToUrl (String url) throws InterruptedException{
         page.navigate(url);
         Thread.sleep(3000);
@@ -151,5 +171,6 @@ public class testBase {
         String split_data = stringBuilder.toString().trim();
         return split_data;
     }
+
 
 }
