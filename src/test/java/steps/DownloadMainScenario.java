@@ -10,8 +10,9 @@ public class DownloadMainScenario extends testBase{
     LoginPage loginPage = new LoginPage(page);
 
     DownloadActivityLog downloadActivityLog = new DownloadActivityLog();
+    DownloadInvestorsDocumentInbox downloadInvestorsDocumentInbox = new DownloadInvestorsDocumentInbox();
 
-    public String investorId = "112522";
+    public String investorId = "112604";
 
     @Test
     @DisplayName("001. Login")
@@ -27,13 +28,22 @@ public class DownloadMainScenario extends testBase{
         }
     }
 
+//    @Test
+//    @DisplayName("002. Download investor activity log")
+//    void downloadInvestorActivityLog() throws Exception {
+//        System.out.println("-----Working with InvesterID = "+investorId);
+//        System.out.println("--Start download activity log--");
+//        downloadActivityLog.downloadInvestorActivityLog(investorId);
+//        System.out.println("--End download activity log--");
+//    }
+
     @Test
-    @DisplayName("003. Download investor activity log")
+    @DisplayName("003. Download investor document / inbox")
     void downloadInvestorActivityLog() throws Exception {
         System.out.println("-----Working with InvesterID = "+investorId);
-        System.out.println("--Start download activity log--");
-        downloadActivityLog.downloadInvestorActivityLog(investorId);
-        System.out.println("--End download activity log--");
+        System.out.println("--Start download investors document--");
+        downloadInvestorsDocumentInbox.downloadInvestorActivityLog(investorId);
+        System.out.println("--End download investors document--");
     }
 
 }

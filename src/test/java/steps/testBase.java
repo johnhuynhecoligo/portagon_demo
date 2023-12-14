@@ -10,15 +10,13 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import utils.NameFile;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import java.io.IOException;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Properties;
+import java.util.UUID;
 
 @Execution(ExecutionMode.CONCURRENT) //Enable parallel execution. Config in the playwright.config file
  @TestMethodOrder(MethodOrderer.DisplayName.class) //Order test execution by Display name
@@ -43,7 +41,7 @@ public class testBase {
             setPropertiesFile(projectPath, propertiesFilePathRoot);
 
             //Change setHeadless to True for headless running
-            BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(50);
+            BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(50);
             browser = playwright.chromium().launch(options);
             context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1800,950));
 //            context.tracing().start(new Tracing.StartOptions()
@@ -111,7 +109,7 @@ public class testBase {
 
         fileName = setNameFile(fileName);
 
-        //create a File class object and give the file the name employees.csv
+        //create a File class object and give the file the name .csv
         java.io.File courseCSV = new java.io.File("Downloads/"+investorID+"/"+folderName+"/"+fileName+".csv");
 
         //Create a Printwriter text output stream and link it to the CSV File
@@ -172,5 +170,10 @@ public class testBase {
         return split_data;
     }
 
+    public String genUUID(){
+        UUID uuid = UUID.randomUUID();
+        String uuidAsString = uuid.toString();
+        return uuidAsString;
+    }
 
 }
