@@ -54,26 +54,40 @@ public class DownloadActivityLog extends testBase{
                         activityLog_array[rowCount][2]=cell_data[2].trim();
                         activityLog_array[rowCount][3]=cell_data[3].trim();
 
-                        //Get the element of Specification column
-                        String[] attr = activityLog.getAtributeSpecification(rowCount);
-                        temp = attr[0];
-                        temp = splitString(temp, "\n");
-                        temp = splitString(temp, " ");
-                        activityLog_array[rowCount][4]= temp;
-                        activityLog_array[rowCount][5]=attr[1];
+                        if (cell_data[3].trim().equals("triggered")){
+                            String value = activityLog.getContentSpecification(rowCount);
+                            activityLog_array[rowCount][4] = value;
+                        }else {
+                            //Get the element of Specification column
+                            String[] attr = activityLog.getAtributeSpecification(rowCount);
+                            temp = attr[0];
+                            temp = splitString(temp, "\n");
+                            temp = splitString(temp, " ");
+                            activityLog_array[rowCount][4] = temp;
+                            activityLog_array[rowCount][5] = attr[1];
+                        }
                         activityLog_array[rowCount][6]=cell_data[5].trim();
                     }
                     //Open activity log details
-                    //Open email popup
-                    if (cell_data[3].trim().equals("E-mail address")){
-                        downloadEmailContent(rowCount, investorId, arr_id);
-                    }else{
-                        //Get the html table
-                        Locator listElement = activityLog.getNoOfColLogDetailTable(rowCount, arr_id);
-                        System.out.println("There are detail col: "+listElement.count());
-                        activityLogDetailArray = new String[listElement.count()];
-                        activityLogDetailArray = activityLog.getContentLogDetailTable(rowCount, arr_id, listElement.count());
-                        downloadDetailOfActivity(investorId, arr_id, activityLogDetailArray, rowCount);
+                    if (cell_data[3].trim().equals("triggered")){
+                        String value = activityLog.getContentSpecification(rowCount);
+                        activityLog_array[rowCount][4] = value;
+                    }else {
+                        if (cell_data[3].trim().equals("E-mail address")) {
+                            //Open email popup and download it
+                            downloadEmailContent(rowCount, investorId, arr_id);
+                        } else {
+                            //Get the html table
+                            Locator listElement = activityLog.getNoOfColLogDetailTable(rowCount, arr_id);
+//                            System.out.println("There are detail col: " + listElement.count());
+                            if(listElement.count()>0){
+                                activityLogDetailArray = new String[listElement.count()];
+                                activityLogDetailArray = activityLog.getContentLogDetailTable(rowCount, arr_id, listElement.count());
+                                downloadDetailOfActivity(investorId, arr_id, activityLogDetailArray, rowCount);
+                            }else{
+                                //Just write down csv file
+                            }
+                        }
                     }
                 }
 
@@ -127,26 +141,39 @@ public class DownloadActivityLog extends testBase{
                             activityLog_array[rowCount + count_first_row][3]=cell_data[3].trim();
 
                             //Get the element of Specification column
-                            String[] attr = activityLog.getAtributeSpecification(rowCount);
-                            temp = attr[0];
-                            temp = splitString(temp, "\n");
-                            temp = splitString(temp, " ");
-                            activityLog_array[rowCount + count_first_row][4]= temp;
-                            activityLog_array[rowCount + count_first_row][5]=attr[1];
-
+                            if (cell_data[3].trim().equals("triggered")){
+                                String value = activityLog.getContentSpecification(rowCount);
+                                activityLog_array[rowCount + count_first_row][4] = value;
+                            }else {
+                                String[] attr = activityLog.getAtributeSpecification(rowCount);
+                                temp = attr[0];
+                                temp = splitString(temp, "\n");
+                                temp = splitString(temp, " ");
+                                activityLog_array[rowCount + count_first_row][4] = temp;
+                                activityLog_array[rowCount + count_first_row][5] = attr[1];
+                            }
                             activityLog_array[rowCount + count_first_row][6]=cell_data[5].trim();
                         }
                         //Open activity log details
-                        //Open email popup
-                        if (cell_data[3].trim().equals("E-mail address")){
-                            downloadEmailContent(rowCount, investorId, arr_id);
-                        }else{
-                            //Get the html table
-                            Locator listElement = activityLog.getNoOfColLogDetailTable(rowCount, arr_id);
-                            System.out.println("There are detail col: "+listElement.count());
-                            activityLogDetailArray = new String[listElement.count()];
-                            activityLogDetailArray = activityLog.getContentLogDetailTable(rowCount, arr_id, listElement.count());
-                            downloadDetailOfActivity(investorId, arr_id, activityLogDetailArray, rowCount);
+                        if (cell_data[3].trim().equals("triggered")){
+                            String value = activityLog.getContentSpecification(rowCount);
+                            activityLog_array[rowCount][4] = value;
+                        }else {
+                            if (cell_data[3].trim().equals("E-mail address")) {
+                                //Open email popup and download it
+                                downloadEmailContent(rowCount, investorId, arr_id);
+                            } else {
+                                //Get the html table
+                                Locator listElement = activityLog.getNoOfColLogDetailTable(rowCount, arr_id);
+//                                System.out.println("There are detail col: " + listElement.count());
+                                if(listElement.count()>0){
+                                    activityLogDetailArray = new String[listElement.count()];
+                                    activityLogDetailArray = activityLog.getContentLogDetailTable(rowCount, arr_id, listElement.count());
+                                    downloadDetailOfActivity(investorId, arr_id, activityLogDetailArray, rowCount);
+                                }else{
+                                    //Just write down csv file
+                                }
+                            }
                         }
                     }
                 }
@@ -154,13 +181,13 @@ public class DownloadActivityLog extends testBase{
 
             System.out.println("Total: " + row_total);
 
-            for (int i = 0; i<activityLog_array.length; i++){
-                for (int j=0; j<activityLog_array[i].length; j++){
-                    System.out.print(activityLog_array[i][j] + "\t");
-                }
-
-                System.out.println("\n");
-            }
+//            for (int i = 0; i<activityLog_array.length; i++){
+//                for (int j=0; j<activityLog_array[i].length; j++){
+//                    System.out.print(activityLog_array[i][j] + "\t");
+//                }
+//
+//                System.out.println("\n");
+//            }
 
             //Write CSV
             String folder_name = investorId;
@@ -181,7 +208,7 @@ public class DownloadActivityLog extends testBase{
         System.out.println(fileName);
         popup.waitForLoadState();
         String content = popup.content();
-        String folderName = "HTML Email";
+        String folderName = "ActivityLog/HTML Email";
         writeHTML(content, investorId, folderName, fileName);
         System.out.println("HTML Downloaded !");
         popup.close();
@@ -216,7 +243,7 @@ public class DownloadActivityLog extends testBase{
         logDetailArray[1][3] = logArray[2];
         logDetailArray[1][4] = description;
 
-        String folderName = "LogDetail";
+        String folderName = "ActivityLog/LogDetail";
         String fileName = logID+"_logDetail";
         writeCSV(logDetailArray, investorID, folderName, fileName);
     }

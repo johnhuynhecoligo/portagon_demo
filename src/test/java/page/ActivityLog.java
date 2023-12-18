@@ -99,10 +99,11 @@ public class ActivityLog {
         page.locator(cel_locator).click();
     }
 
-    public void clickSpecification(int row){
+    public String getContentSpecification(int row){
         String cel_locator = "";
-        cel_locator = "//section/div[2]/section/div[2]/div[2]/table/tbody/tr["+row+"]/td[5]/a";
-        page.locator(cel_locator).click();
+        cel_locator = "//section/div[2]/section/div[2]/div[2]/table/tbody/tr["+row+"]/td[5]";
+        String value  = page.locator(cel_locator).textContent().trim();
+        return value;
     }
 
     public String getActivityID (int row){

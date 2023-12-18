@@ -41,7 +41,7 @@ public class testBase {
             setPropertiesFile(projectPath, propertiesFilePathRoot);
 
             //Change setHeadless to True for headless running
-            BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(50);
+            BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(50);
             browser = playwright.chromium().launch(options);
             context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1800,950));
 //            context.tracing().start(new Tracing.StartOptions()
