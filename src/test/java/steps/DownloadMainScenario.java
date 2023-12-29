@@ -37,13 +37,13 @@ public class DownloadMainScenario extends testBase{
         System.out.println("--End download activity log--");
     }
 
-//    @Test
-//    @DisplayName("003. Download investor document / inbox")
-//    void setDownloadInvestorsDocumentInbox() throws Exception {
-//        System.out.println("-----Working with InvesterID = "+investorId);
-//        System.out.println("--Start download investors document--");
-//        downloadInvestorsDocumentInbox.downloadInvestorActivityLog(investorId);
-//        System.out.println("--End download investors document--");
-//    }
+    @Test
+    @DisplayName("003. Download investor document / inbox")
+    void setDownloadInvestorsDocumentInbox() throws Exception {
+        System.out.println("-----Working with InvesterID = "+investorId);
+        System.out.println("--Start download investors document--");
+        downloadInvestorsDocumentInbox.downloadInvestorActivityLog(investorId);
+        System.out.println("--End download investors document--");
+    }
 
 }
