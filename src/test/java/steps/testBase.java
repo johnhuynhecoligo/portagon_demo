@@ -41,7 +41,7 @@ public class testBase {
             setPropertiesFile(projectPath, propertiesFilePathRoot);
 
             //Change setHeadless to True for headless running
-            BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(50);
+            BrowserType.LaunchOptions options = new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(50);
             browser = playwright.chromium().launch(options);
             context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1800,950));
 //            context.tracing().start(new Tracing.StartOptions()
@@ -174,6 +174,17 @@ public class testBase {
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
         return uuidAsString;
+    }
+
+    public String cutString(String in, String splitString){
+        String[] splits = in.split(splitString);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String item: splits){
+            stringBuilder.append(item);
+        }
+        String value ="";
+        value = stringBuilder.toString();
+        return value;
     }
 
 }

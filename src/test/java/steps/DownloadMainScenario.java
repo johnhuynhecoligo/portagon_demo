@@ -11,6 +11,7 @@ public class DownloadMainScenario extends testBase{
 
     DownloadActivityLog downloadActivityLog = new DownloadActivityLog();
     DownloadInvestorsDocumentInbox downloadInvestorsDocumentInbox = new DownloadInvestorsDocumentInbox();
+    DownloadBonusCodeRules downloadBonusCodeRules = new DownloadBonusCodeRules();
 
     public String investorId = "112604";
 
@@ -28,22 +29,30 @@ public class DownloadMainScenario extends testBase{
         }
     }
 
-    @Test
-    @DisplayName("002. Download investor activity log")
-    void downloadInvestorActivityLog() throws Exception {
-        System.out.println("-----Working with InvesterID = "+investorId);
-        System.out.println("--Start download activity log--");
-        downloadActivityLog.downloadInvestorActivityLog(investorId);
-        System.out.println("--End download activity log--");
-    }
+//    @Test
+//    @DisplayName("002. Download investor activity log")
+//    void downloadInvestorActivityLog() throws Exception {
+//        System.out.println("-----Working with InvesterID = "+investorId);
+//        System.out.println("--Start downloading activity log--");
+//        downloadActivityLog.downloadInvestorActivityLog(investorId);
+//        System.out.println("--End downloading activity log--");
+//    }
+//
+//    @Test
+//    @DisplayName("003. Download investor document / inbox")
+//    void setDownloadInvestorsDocumentInbox() throws Exception {
+//        System.out.println("-----Working with InvesterID = "+investorId);
+//        System.out.println("--Start downloading investors document--");
+//        downloadInvestorsDocumentInbox.downloadInvestorActivityLog(investorId);
+//        System.out.println("--End downloading investors document--");
+//    }
 
     @Test
-    @DisplayName("003. Download investor document / inbox")
+    @DisplayName("004. Download bonus code rules")
     void setDownloadInvestorsDocumentInbox() throws Exception {
-        System.out.println("-----Working with InvesterID = "+investorId);
-        System.out.println("--Start download investors document--");
-        downloadInvestorsDocumentInbox.downloadInvestorActivityLog(investorId);
-        System.out.println("--End download investors document--");
+        System.out.println("--Start downloading bonus code rules--");
+        downloadBonusCodeRules.DownloadBonusCodeRules();
+        System.out.println("--End downloading bonus code rules--");
     }
 
 }
