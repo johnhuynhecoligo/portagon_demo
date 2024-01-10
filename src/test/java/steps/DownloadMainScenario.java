@@ -13,7 +13,9 @@ public class DownloadMainScenario extends testBase{
     DownloadInvestorsDocumentInbox downloadInvestorsDocumentInbox = new DownloadInvestorsDocumentInbox();
     DownloadBonusCodeRules downloadBonusCodeRules = new DownloadBonusCodeRules();
 
-    public String investorId = "112604";
+    DownloadTaxDocuments downloadTaxDocuments = new DownloadTaxDocuments();
+
+    public String investorId = "2941";
 
     @Test
     @DisplayName("001. Login")
@@ -23,7 +25,7 @@ public class DownloadMainScenario extends testBase{
             String email = testBase.getPropValue("email");
             String pass = testBase.getPropValue("pass");
             loginPage.enterDataAndLogin(email, pass);
-            Thread.sleep(2000);
+            Thread.sleep(4000);
         }catch (InterruptedException e){
             throw new RuntimeException(e);
         }
@@ -47,12 +49,20 @@ public class DownloadMainScenario extends testBase{
 //        System.out.println("--End downloading investors document--");
 //    }
 
+//    @Test
+//    @DisplayName("004. Download bonus code rules")
+//    void setDownloadInvestorsDocumentInbox() throws Exception {
+//        System.out.println("--Start downloading bonus code rules--");
+//        downloadBonusCodeRules.DownloadBonusCodeRules();
+//        System.out.println("--End downloading bonus code rules--");
+//    }
+
     @Test
-    @DisplayName("004. Download bonus code rules")
+    @DisplayName("005. Download tax documents")
     void setDownloadInvestorsDocumentInbox() throws Exception {
-        System.out.println("--Start downloading bonus code rules--");
-        downloadBonusCodeRules.DownloadBonusCodeRules();
-        System.out.println("--End downloading bonus code rules--");
+        System.out.println("--Start downloading tax documents--");
+        downloadTaxDocuments.DownloadTaxDocuments(investorId);
+        System.out.println("--End downloading tax documents--");
     }
 
 }
